@@ -2,10 +2,12 @@ package com.kn.spzx.manager.service.impl;
 
 import cn.hutool.crypto.digest.DigestUtil;
 import com.alibaba.fastjson2.JSON;
+import com.kn.spzx.common.Exception.knException;
 import com.kn.spzx.manager.mapper.SysUserMapper;
 import com.kn.spzx.manager.service.SysUserService;
 import com.kn.spzx.model.dto.system.LoginDto;
 import com.kn.spzx.model.entity.system.SysUser;
+import com.kn.spzx.model.vo.common.ResultCodeEnum;
 import com.kn.spzx.model.vo.system.LoginVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -33,7 +35,7 @@ public class SysUserServiceImpl implements SysUserService {
 
         //3.如果根据用户名查询不到用户信息，用户名不存在，返回错误信息
         if (sysUser == null) {
-            throw new RuntimeException("用户名不存在");
+            throw new knException(ResultCodeEnum.LOGIN_ERROR);
         }
         //4.查询到用户信息表示用户名存在，
 
@@ -44,7 +46,7 @@ public class SysUserServiceImpl implements SysUserService {
                 DigestUtils.md5DigestAsHex(loginDto.getPassword().getBytes());
         //6.密码比对不成功 返回错误信息
         if (!input_password.equals(database_password)) {
-            throw new RuntimeException("密码不正确");
+            throw new knException(ResultCodeEnum.LOGIN_ERROR);
         }
         //7.密码正确 生成唯一标识
         String token = UUID.randomUUID().toString().replaceAll("-", "");

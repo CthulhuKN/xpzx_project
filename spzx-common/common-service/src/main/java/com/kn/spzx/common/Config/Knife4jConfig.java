@@ -29,7 +29,7 @@ public class Knife4jConfig {
                         .title("尚品甑选API接口文档")
                         .version("1.0")
                         .description("尚品甑选API接口文档")
-                        .contact(new Contact().name("atguigu"))); // 设定作者
+                        .contact(new Contact().name("康宁"))); // 设定作者
     }
 
 }
